@@ -1,0 +1,17 @@
+aiostream
+bazarr
+decypharr
+jackett
+jellyfin
+jellyseer
+library
+profilarr
+prowlarr/**
+radarr
+sonarr
+jellyseerr
+!prowlarr/
+!prowlarr/config/
+!prowlarr/config/Definitions/
+!prowlarr/config/Definitions/Custom/
+!prowlarr/config/Definitions/Custom/**

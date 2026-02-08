@@ -1,0 +1,138 @@
+services:
+  # ========================
+  # Decypharr
+  # ========================
+  decypharr:
+    image: cy01/blackhole:latest
+    container_name: decypharr
+    ports:
+      - "8282:8282"
+    volumes:
+      - /mnt:/mnt:rshared
+      - /opt/freeflix/decypharr:/app
+      - /opt/freeflix/library:/library
+    restart: unless-stopped
+    devices:
+      - /dev/fuse:/dev/fuse:rwm
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+  # ========================
+  # Jellyfin
+  # ========================
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    user: "1000:1000"
+    environment:
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/jellyfin/config:/config
+      - /opt/freeflix/jellyfin/cache:/cache
+      - /opt/freeflix/library/:/library:ro
+      - /mnt:/mnt:rshared
+    ports:
+      - "8096:8096"
+      - "7359:7359/udp"
+    devices:
+      - /dev/dri:/dev/dri  # Hardware acceleration (RPi4/5)
+    restart: unless-stopped
+
+  # ========================
+  # Radarr (Películas)
+  # ========================
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/radarr/config:/config
+      - /opt/freeflix/library:/library
+      - /mnt:/mnt:rshared
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  # ========================
+  # Sonarr (Series)
+  # ========================
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/sonarr/config:/config
+      - /opt/freeflix/library:/library
+      - /mnt:/mnt:rshared
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+
+  # ========================
+  # Prowlarr (Indexadores)
+  # ========================
+  prowlarr:
+    image: linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/prowlarr/config:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+
+  # ========================
+  # Jellyseerr
+  # ========================
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/jellyseerr/config:/app/config
+    ports:
+      - "5055:5055"
+    restart: unless-stopped
+  # ========================
+  # Profilarr
+  # ========================
+  profilarr:
+    image: santiagosayshey/profilarr:latest # Use :beta for early access to new features
+    container_name: profilarr
+    ports:
+        - 6868:6868
+    volumes:
+        - /opt/freeflix/profilarr:/config # Replace with your actual path
+    environment:
+        - TZ=Europe/Madrid # Set your timezone
+    restart: unless-stopped
+  # ========================
+  # Bazarr
+  # ========================
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/freeflix/bazarr:/config
+      - /opt/freeflix/library/downloads/radarr:/movies
+      - /opt/freeflix/library/downloads/sonarr:/tv
+      - /mnt:/mnt:rshared
+    ports:
+      - 6767:6767
+    restart: unless-stopped
