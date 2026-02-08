@@ -17,7 +17,7 @@ Este repositorio contiene la configuración de **Docker Compose** para desplegar
 | Servicio | Puerto | Descripción |
 | :--- | :---: | :--- |
 | **Decypharr** | `8282` | Motor de descargas y montaje de unidad virtual Real-Debrid. |
-| **Jellyfin** | `8096` | Servidor de streaming multimedia (tu Netflix personal). |
+| **Jellyfin** | `8096` | Servidor de streaming multimedia. |
 | **Jellyseerr** | `5055` | Interfaz web para solicitar películas y series. |
 | **Prowlarr** | `9696` | Gestor centralizado de indexadores (Torrentio, etc.). |
 | **Sonarr** | `8989` | Gestor automatizado de series de TV. |
